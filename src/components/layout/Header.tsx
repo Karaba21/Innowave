@@ -53,7 +53,7 @@ export function Header() {
                             <input
                                 type="text"
                                 placeholder="Buscar productos..."
-                                className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500"
+                                className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500 text-gray-900"
                             />
                             <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
                                 <Search size={18} />
@@ -79,7 +79,7 @@ export function Header() {
                     <input
                         type="text"
                         placeholder="Buscar productos..."
-                        className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500"
+                        className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500 text-gray-900"
                     />
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
                         <Search size={18} />
