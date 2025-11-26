@@ -68,8 +68,8 @@ export default async function ProductPage({ params }: Props) {
                         )}
                     </div>
 
-                    <div className="prose prose-gray mb-8">
-                        <p>{product.description}</p>
+                    <div className="mb-8">
+                        <p className="text-gray-700 leading-relaxed">{product.description}</p>
                     </div>
 
                     <div className="border-t border-b border-gray-100 py-6 mb-8">

@@ -27,19 +27,19 @@ export function ProductActions({ product }: ProductActionsProps) {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
-                <span className="font-medium text-gray-700">Cantidad:</span>
+                <span className="font-medium text-gray-900">Cantidad:</span>
                 <div className="flex items-center border rounded-full">
                     <button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="p-3 hover:bg-gray-100 rounded-l-full transition-colors"
+                        className="p-3 hover:bg-gray-100 rounded-l-full transition-colors text-gray-700"
                         disabled={quantity <= 1}
                     >
                         <Minus size={16} />
                     </button>
-                    <span className="w-12 text-center font-bold">{quantity}</span>
+                    <span className="w-12 text-center font-bold text-gray-900">{quantity}</span>
                     <button
                         onClick={() => setQuantity(quantity + 1)}
-                        className="p-3 hover:bg-gray-100 rounded-r-full transition-colors"
+                        className="p-3 hover:bg-gray-100 rounded-r-full transition-colors text-gray-700"
                     >
                         <Plus size={16} />
                     </button>
