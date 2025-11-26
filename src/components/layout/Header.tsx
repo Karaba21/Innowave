@@ -5,6 +5,7 @@ import { ShoppingCart, Search, Menu, X, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
+import logo from '@/assets/logocuadrado.png';
 
 export function Header() {
     const { cartCount, setIsCartOpen } = useCart();
@@ -32,11 +33,9 @@ export function Header() {
                     </button>
 
                     {/* Logo */}
-                    <Link href="/" className="flex-shrink-0">
-                        {/* Placeholder for logo if file doesn't exist, but user said it's in src/assets */}
+                    <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+                        <Image src={logo} alt="Innowave Logo" width={50} height={50} className="object-contain" />
                         <div className="font-bold text-2xl text-blue-900 tracking-tighter">INNOWAVE</div>
-                        {/* Uncomment below when logo is confirmed */}
-                        {/* <Image src="/assets/logo.png" alt="Innowave" width={150} height={40} className="h-10 w-auto object-contain" /> */}
                     </Link>
 
                     {/* Desktop Nav */}
