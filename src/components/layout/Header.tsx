@@ -41,7 +41,20 @@ export function Header() {
                     {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center gap-8 font-medium text-gray-700">
                         <Link href="/" className="hover:text-blue-600 transition-colors">Tienda</Link>
-                        <Link href="/#categorias" className="hover:text-blue-600 transition-colors">Categorías</Link>
+
+                        <div className="relative group">
+                            <button className="hover:text-blue-600 transition-colors flex items-center gap-1 cursor-pointer">
+                                Categorías
+                            </button>
+                            <div className="absolute top-full left-0 w-56 bg-white shadow-xl rounded-xl py-3 hidden group-hover:block border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                                <Link href="/coleccion/electronicos" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Electronicos</Link>
+                                <Link href="/coleccion/bazar" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Bazar</Link>
+                                <Link href="/coleccion/electrodomesticos" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Electrodomesticos</Link>
+                                <Link href="/coleccion/movilidad" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Movilidad</Link>
+                                <Link href="/coleccion/telefonia" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Telefonia</Link>
+                            </div>
+                        </div>
+
                         <Link href="/#ofertas" className="hover:text-blue-600 transition-colors">Ofertas</Link>
                         <Link href="#contacto" className="hover:text-blue-600 transition-colors">Contacto</Link>
                     </nav>
@@ -90,7 +103,14 @@ export function Header() {
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-white border-t shadow-lg py-4 px-4 flex flex-col gap-4">
                     <Link href="/" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Tienda</Link>
-                    <Link href="/#categorias" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Categorías</Link>
+                    <div className="py-2 border-b flex flex-col gap-2">
+                        <span className="font-semibold text-gray-500 text-sm">Categorías</span>
+                        <Link href="/coleccion/electronicos" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Electronicos</Link>
+                        <Link href="/coleccion/bazar" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Bazar</Link>
+                        <Link href="/coleccion/electrodomesticos" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Electrodomesticos</Link>
+                        <Link href="/coleccion/movilidad" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Movilidad</Link>
+                        <Link href="/coleccion/telefonia" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Telefonia</Link>
+                    </div>
                     <Link href="/#ofertas" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Ofertas</Link>
                     <Link href="#contacto" className="py-2" onClick={() => setIsMobileMenuOpen(false)}>Contacto</Link>
                 </div>

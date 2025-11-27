@@ -59,27 +59,54 @@ export default async function Home() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
           Explora por Categoría
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="#" className="group relative h-64 rounded-xl overflow-hidden">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1000&auto=format&fit=crop")' }}
-            ></div>
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h3 className="text-white text-3xl font-bold">Tecnología</h3>
-            </div>
-          </Link>
-          <Link href="#" className="group relative h-64 rounded-xl overflow-hidden">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1000&auto=format&fit=crop")' }}
-            ></div>
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h3 className="text-white text-3xl font-bold">Hogar</h3>
-            </div>
-          </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            {
+              title: 'Electrónicos',
+              handle: 'electronicos',
+              image: 'https://images.unsplash.com/photo-1498049860654-af1a5c5668ba?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+              title: 'Bazar',
+              handle: 'bazar',
+              image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+              title: 'Electrodomésticos',
+              handle: 'electrodomesticos',
+              image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+              title: 'Movilidad',
+              handle: 'movilidad',
+              image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c3d?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+              title: 'Telefonía',
+              handle: 'telefonia',
+              image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800'
+            }
+          ].map((category) => (
+            <Link
+              key={category.handle}
+              href={`/coleccion/${category.handle}`}
+              className="group relative h-64 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url("${category.image}")` }}
+              ></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 transition-colors"></div>
+              <div className="absolute inset-0 flex items-end p-6">
+                <div className="w-full">
+                  <h3 className="text-white text-2xl font-bold mb-2 transform translate-y-0 group-hover:-translate-y-1 transition-transform duration-300">
+                    {category.title}
+                  </h3>
+                  <div className="h-1 w-12 bg-blue-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
     </div>
