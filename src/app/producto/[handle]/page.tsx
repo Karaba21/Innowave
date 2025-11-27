@@ -2,6 +2,7 @@ import { getProductByHandle, createCheckout } from '@/lib/shopify';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { ProductActions } from '@/components/product/ProductActions';
+import { ProductImageGallery } from '@/components/product/ProductImageGallery';
 
 interface Props {
     params: {
@@ -32,21 +33,13 @@ export default async function ProductPage({ params }: Props) {
     return (
         <div className="container mx-auto px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* Image Gallery (Placeholder for single image) */}
-                <div className="relative aspect-square bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                    {product.oldPrice && (
-                        <span className="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full z-10">
-                            -{discount}% OFF
-                        </span>
-                    )}
-                    <Image
-                        src={product.image}
-                        alt={product.title}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                </div>
+                {/* Image Gallery */}
+                <ProductImageGallery
+                    images={product.images}
+                    productTitle={product.title}
+                    discount={discount}
+                    showDiscount={!!product.oldPrice}
+                />
 
                 {/* Product Info */}
                 <div className="flex flex-col">

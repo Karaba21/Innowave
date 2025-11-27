@@ -57,7 +57,7 @@ const PRODUCTS_FRAGMENT = `
         currencyCode
       }
     }
-    images(first: 1) {
+    images(first: 10) {
       edges {
         node {
           url
@@ -143,7 +143,7 @@ function reshapeProduct(shopifyProduct: any): Product {
         description: shopifyProduct.description,
         price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
         category: 'Shopify', // Placeholder as category logic might differ
-        image: shopifyProduct.images?.edges[0]?.node?.url || '',
+        images: shopifyProduct.images?.edges.map((edge: any) => edge.node.url) || [],
         handle: shopifyProduct.handle,
         isFeatured: false // Logic to determine this can be added
     };

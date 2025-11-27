@@ -5,7 +5,7 @@ export interface Product {
   price: number;
   oldPrice?: number;
   category: string;
-  image: string;
+  images: string[];
   handle: string;
   isFeatured: boolean;
   sectionTag?: 'los-mas-elegidos' | 'esenciales' | 'producto-del-mes' | 'hogar' | 'tecnologia';

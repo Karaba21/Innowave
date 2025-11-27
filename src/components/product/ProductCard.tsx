@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     </span>
                 )}
                 <Image
-                    src={product.image}
+                    src={product.images[0] || '/placeholder.jpg'}
                     alt={product.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
