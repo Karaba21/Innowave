@@ -2,12 +2,10 @@ import { Hero } from '@/components/home/Hero';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { getFeaturedProducts, getProductsByCollection } from '@/lib/shopify';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
   const essentialProducts = await getProductsByCollection('esenciales');
-  const productOfMonth = (await getProductsByCollection('producto-del-mes'))[0];
 
   return (
     <div className="flex flex-col gap-8 pb-12">
@@ -18,36 +16,6 @@ export default async function Home() {
         products={featuredProducts}
         id="ofertas"
       />
-
-      {/* Product of the Month */}
-      {productOfMonth && (
-        <section className="container mx-auto px-4 py-8">
-          <div className="bg-gray-900 rounded-2xl overflow-hidden text-white shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <span className="text-blue-400 font-bold tracking-wider uppercase mb-2">Producto del Mes</span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">{productOfMonth.title}</h2>
-                <p className="text-gray-300 mb-8 text-lg">{productOfMonth.description}</p>
-                <div className="flex items-center gap-6">
-                  <span className="text-3xl font-bold">
-                    ${productOfMonth.price.toLocaleString('es-UY')}
-                  </span>
-                  <Link
-                    href={`/producto/${productOfMonth.handle}`}
-                    className="bg-white text-gray-900 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
-                  >
-                    Ver detalle <ArrowRight size={20} />
-                  </Link>
-                </div>
-              </div>
-              <div
-                className="h-64 md:h-auto bg-cover bg-center"
-                style={{ backgroundImage: `url(${productOfMonth.images[0]})` }}
-              ></div>
-            </div>
-          </div>
-        </section>
-      )}
 
       <ProductGrid
         title="Esenciales para tu hogar"
