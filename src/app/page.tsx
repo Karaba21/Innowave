@@ -42,7 +42,7 @@ export default async function Home() {
               </div>
               <div
                 className="h-64 md:h-auto bg-cover bg-center"
-                style={{ backgroundImage: `url(${productOfMonth.image})` }}
+                style={{ backgroundImage: `url(${productOfMonth.images[0]})` }}
               ></div>
             </div>
           </div>
