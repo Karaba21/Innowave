@@ -31,7 +31,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             const savedCart = localStorage.getItem('cart');
             if (savedCart) {
                 try {
-                    setItems(JSON.parse(savedCart));
+                    const parsedCart = JSON.parse(savedCart);
+                    // Validate that each item has the required structure
+                    const validatedCart = parsedCart.filter((item: any) => {
+                        return item.id && item.title && item.price && Array.isArray(item.images);
+                    });
+
+                    // If validation removed items, update localStorage
+                    if (validatedCart.length !== parsedCart.length) {
+                        console.warn('Removed invalid items from cart');
+                        localStorage.setItem('cart', JSON.stringify(validatedCart));
+                    }
+
+                    setItems(validatedCart);
                 } catch (e) {
                     console.error('Failed to parse cart', e);
                     localStorage.removeItem('cart'); // Clear corrupted data
