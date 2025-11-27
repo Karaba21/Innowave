@@ -22,20 +22,27 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
+    // Load cart from localStorage only on client side
     useEffect(() => {
         setIsMounted(true);
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            try {
-                setItems(JSON.parse(savedCart));
-            } catch (e) {
-                console.error('Failed to parse cart', e);
+
+        // Only access localStorage on the client
+        if (typeof window !== 'undefined') {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                try {
+                    setItems(JSON.parse(savedCart));
+                } catch (e) {
+                    console.error('Failed to parse cart', e);
+                    localStorage.removeItem('cart'); // Clear corrupted data
+                }
             }
         }
     }, []);
 
+    // Save cart to localStorage whenever it changes
     useEffect(() => {
-        if (isMounted) {
+        if (isMounted && typeof window !== 'undefined') {
             localStorage.setItem('cart', JSON.stringify(items));
         }
     }, [items, isMounted]);
