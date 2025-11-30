@@ -3,7 +3,6 @@
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
-import { createCheckout } from '@/lib/shopify';
 
 export function CartDrawer() {
     const {
@@ -26,15 +25,77 @@ export function CartDrawer() {
     };
 
     const handleCheckout = async () => {
-        const lineItems = items.map(item => ({
-            variantId: item.id, // En realidad usaríamos el variantId real de Shopify
+        // Intentar obtener variantId para items que no lo tengan
+        const itemsWithVariants = await Promise.all(
+            items.map(async (item) => {
+                if (item.variantId) {
+                    return item;
+                }
+                // Intentar obtener el variantId desde la API
+                try {
+                    const response = await fetch('/api/variant', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ productId: item.id })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return { ...item, variantId: data.variantId };
+                    }
+                } catch (error) {
+                    console.error('Error obteniendo variantId:', error);
+                }
+                return item;
+            })
+        );
+
+        // Filtrar items que tengan variantId válido
+        const validItems = itemsWithVariants.filter(item => item.variantId);
+        
+        if (validItems.length === 0) {
+            alert('No hay productos válidos en el carrito. Por favor, elimina los productos del carrito y vuelve a agregarlos desde la página del producto.');
+            console.error('Items sin variantId después de intentar obtenerlos:', itemsWithVariants.map(item => ({ title: item.title, id: item.id, variantId: item.variantId })));
+            return;
+        }
+
+        const lineItems = validItems.map(item => ({
+            variantId: item.variantId!,
             quantity: item.quantity
         }));
 
-        // Simulación de checkout
-        alert('Redirigiendo a checkout de Shopify...');
-        const checkout = await createCheckout(lineItems);
-        console.log('Checkout URL:', checkout.webUrl);
+        try {
+            console.log('Creando checkout con items:', lineItems);
+            
+            // Llamar a la API route para crear el checkout
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lineItems })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al crear el checkout');
+            }
+
+            const checkout = await response.json();
+            
+            // Redirigir a la URL de checkout de Shopify
+            if (checkout.webUrl) {
+                window.location.href = checkout.webUrl;
+            } else {
+                throw new Error('No se recibió URL de checkout');
+            }
+        } catch (error: any) {
+            console.error('Error al crear checkout:', error);
+            const errorMessage = error?.message || 'Error desconocido';
+            alert(`Error al procesar el checkout: ${errorMessage}`);
+        }
     };
 
     return (

@@ -9,6 +9,7 @@ export interface Product {
   handle: string;
   isFeatured: boolean;
   sectionTag?: 'los-mas-elegidos' | 'esenciales' | 'producto-del-mes' | 'hogar' | 'tecnologia';
+  variantId?: string; // ID de la variante de Shopify
 }
 
 export interface CartItem extends Product {

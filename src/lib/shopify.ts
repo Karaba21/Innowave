@@ -65,6 +65,17 @@ const PRODUCTS_FRAGMENT = `
         }
       }
     }
+    variants(first: 1) {
+      edges {
+        node {
+          id
+          price {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -136,7 +147,43 @@ export async function getProductByHandle(handle: string): Promise<Product | unde
     return product ? reshapeProduct(product) : undefined;
 }
 
+// Función helper para obtener el variantId de un producto por su ID de Shopify
+export async function getProductVariantId(productId: string): Promise<string | undefined> {
+    // El productId viene en formato "gid://shopify/Product/123456"
+    // Necesitamos extraer el ID numérico o usar el handle
+    const query = `
+    query getProductVariant($id: ID!) {
+      product(id: $id) {
+        variants(first: 1) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  `;
+
+    try {
+        const response = await shopifyFetch<{
+            data: { product: { variants: { edges: { node: { id: string } }[] } } | null };
+        }>({
+            query,
+            variables: { id: productId }
+        });
+
+        const product = response?.body?.data?.product;
+        return product?.variants?.edges?.[0]?.node?.id;
+    } catch (error) {
+        console.error('Error obteniendo variantId:', error);
+        return undefined;
+    }
+}
+
 function reshapeProduct(shopifyProduct: any): Product {
+    const firstVariant = shopifyProduct.variants?.edges?.[0]?.node;
+    
     return {
         id: shopifyProduct.id,
         title: shopifyProduct.title,
@@ -145,14 +192,106 @@ function reshapeProduct(shopifyProduct: any): Product {
         category: 'Shopify', // Placeholder as category logic might differ
         images: shopifyProduct.images?.edges.map((edge: any) => edge.node.url) || [],
         handle: shopifyProduct.handle,
-        isFeatured: false // Logic to determine this can be added
+        isFeatured: false, // Logic to determine this can be added
+        variantId: firstVariant?.id || undefined // Agregar el variantId
     };
 }
 
 export async function createCheckout(lineItems: { variantId: string; quantity: number }[]) {
-    // TODO: Implement checkout creation
-    console.log('Creating checkout for:', lineItems);
-    return {
-        webUrl: 'https://checkout.shopify.com/mock-checkout-url'
+    // Validar que todos los items tengan variantId
+    const invalidItems = lineItems.filter(item => !item.variantId || item.quantity <= 0);
+    if (invalidItems.length > 0) {
+        throw new Error('Algunos productos no tienen una variante válida o cantidad inválida');
+    }
+
+    // Paso 1: Crear el carrito
+    const createCartMutation = `
+        mutation cartCreate($input: CartInput!) {
+            cartCreate(input: $input) {
+                cart {
+                    id
+                    checkoutUrl
+                }
+                userErrors {
+                    field
+                    message
+                }
+            }
+        }
+    `;
+
+    const cartVariables = {
+        input: {
+            lines: lineItems.map(item => ({
+                merchandiseId: item.variantId,
+                quantity: item.quantity
+            }))
+        }
     };
+
+    try {
+        // Crear el carrito
+        const cartResponse = await shopifyFetch<{
+            data: {
+                cartCreate: {
+                    cart: {
+                        id: string;
+                        checkoutUrl: string;
+                    } | null;
+                    userErrors: Array<{
+                        field: string[];
+                        message: string;
+                    }>;
+                };
+            };
+        }>({
+            query: createCartMutation,
+            variables: cartVariables
+        });
+
+        if (!cartResponse) {
+            throw new Error('No se recibió respuesta de Shopify');
+        }
+
+        if (!cartResponse.body) {
+            throw new Error('El cuerpo de la respuesta está vacío');
+        }
+
+        if (!cartResponse.body.data) {
+            // Si hay errores en el nivel superior
+            if ((cartResponse.body as any).errors) {
+                const errors = (cartResponse.body as any).errors;
+                const errorMessages = Array.isArray(errors) 
+                    ? errors.map((err: any) => err.message || JSON.stringify(err)).join(', ')
+                    : JSON.stringify(errors);
+                throw new Error(`Error de Shopify: ${errorMessages}`);
+            }
+            throw new Error('No se recibieron datos de Shopify');
+        }
+
+        const { cart, userErrors } = cartResponse.body.data.cartCreate;
+
+        if (userErrors && userErrors.length > 0) {
+            const errorMessages = userErrors.map(err => err.message).join(', ');
+            throw new Error(`Error al crear el carrito: ${errorMessages}`);
+        }
+
+        if (!cart) {
+            throw new Error('No se pudo crear el carrito');
+        }
+
+        if (!cart.checkoutUrl) {
+            throw new Error('El carrito no tiene una URL de checkout válida');
+        }
+
+        return {
+            id: cart.id,
+            webUrl: cart.checkoutUrl
+        };
+    } catch (error: any) {
+        console.error('Error creating checkout:', error);
+        // Proporcionar un mensaje más útil
+        const errorMessage = error?.message || error?.error?.message || 'Error desconocido al crear el checkout';
+        throw new Error(errorMessage);
+    }
 }
