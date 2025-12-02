@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Search, Menu, X, Phone } from 'lucide-react';
+import { ShoppingCart, Menu, X, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import logo from '@/assets/logocuadrado.png';
+
+import { Suspense } from 'react';
+import { Search as SearchInput } from './Search';
 
 export function Header() {
     const { cartCount, setIsCartOpen } = useCart();
@@ -61,16 +64,9 @@ export function Header() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-4">
-                        <div className="hidden md:flex relative w-64">
-                            <input
-                                type="text"
-                                placeholder="Buscar productos..."
-                                className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500 text-gray-900"
-                            />
-                            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
-                                <Search size={18} />
-                            </button>
-                        </div>
+                        <Suspense fallback={<div className="w-64 h-10 bg-gray-100 rounded-full animate-pulse hidden md:block" />}>
+                            <SearchInput className="hidden md:flex w-64" />
+                        </Suspense>
 
                         <button
                             className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -87,16 +83,12 @@ export function Header() {
                 </div>
 
                 {/* Mobile Search - Visible only on mobile */}
-                <div className="md:hidden mt-4 relative">
-                    <input
-                        type="text"
-                        placeholder="Buscar productos..."
-                        className="w-full pl-4 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-blue-500 placeholder:text-gray-500 text-gray-900"
+                <Suspense fallback={<div className="w-full h-10 bg-gray-100 rounded-full animate-pulse md:hidden mt-4" />}>
+                    <SearchInput
+                        className="md:hidden mt-4"
+                        onSearch={() => setIsMobileMenuOpen(false)}
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        <Search size={18} />
-                    </button>
-                </div>
+                </Suspense>
             </div>
 
             {/* Mobile Menu Overlay */}
