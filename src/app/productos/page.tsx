@@ -1,4 +1,4 @@
-import { ProductGrid } from '@/components/product/ProductGrid';
+import { ProductPageLayout } from '@/components/product/ProductPageLayout';
 import { getAllProducts } from '@/lib/shopify';
 import type { Metadata } from 'next';
 
@@ -66,15 +66,10 @@ export default async function ProductosPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
             <div className="container mx-auto px-4 py-8">
-                <ProductGrid
+                <ProductPageLayout
                     title="Todos los Productos"
                     products={products}
                 />
-                {products.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No se encontraron productos.</p>
-                    </div>
-                )}
             </div>
         </>
     );

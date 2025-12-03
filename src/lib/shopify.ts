@@ -37,7 +37,7 @@ async function shopifyFetch<T>({
       body
     };
   } catch (e) {
-    console.error('Error fetching from Shopify:', e);
+    console.error('Error fetching from Shopify:', JSON.stringify(e, null, 2));
     throw {
       error: e,
       query
@@ -75,6 +75,39 @@ const PRODUCTS_FRAGMENT = `
           }
         }
       }
+    }
+    marca: metafield(namespace: "custom", key: "marca") {
+      value
+    }
+    color: metafield(namespace: "custom", key: "color") {
+      value
+    }
+    tecnologia_bateria: metafield(namespace: "custom", key: "tecnologia_bateria") {
+      value
+    }
+    tecnologia_de_la_bateria: metafield(namespace: "custom", key: "tecnologia_de_la_bateria") {
+      value
+    }
+    estado_estetico: metafield(namespace: "custom", key: "estado_estetico") {
+      value
+    }
+    red_de_datos: metafield(namespace: "custom", key: "red_de_datos") {
+      value
+    }
+    sistema_operativo: metafield(namespace: "custom", key: "sistema_operativo") {
+      value
+    }
+    capacidad_tarjeta_sim: metafield(namespace: "custom", key: "capacidad_tarjeta_sim") {
+      value
+    }
+    capacidad_de_tarjeta_sim: metafield(namespace: "custom", key: "capacidad_de_tarjeta_sim") {
+      value
+    }
+    tipo_suscripcion: metafield(namespace: "custom", key: "tipo_suscripcion") {
+      value
+    }
+    tipo_de_suscripcion: metafield(namespace: "custom", key: "tipo_de_suscripcion") {
+      value
     }
   }
 `;
@@ -164,6 +197,10 @@ export async function getAllProducts(): Promise<Product[]> {
   const response = await shopifyFetch<{
     data: { products: { edges: { node: any }[] } };
   }>({ query });
+
+  if (response?.body?.data?.products?.edges?.length) {
+    // Debug log removed
+  }
 
   return response?.body?.data?.products?.edges.map(({ node }: any) => reshapeProduct(node)) || [];
 }
@@ -258,7 +295,17 @@ function reshapeProduct(shopifyProduct: any): Product {
     images: shopifyProduct.images?.edges.map((edge: any) => edge.node.url) || [],
     handle: shopifyProduct.handle,
     isFeatured: false, // Logic to determine this can be added
-    variantId: firstVariant?.id || undefined // Agregar el variantId
+    variantId: firstVariant?.id || undefined, // Agregar el variantId
+    metafields: {
+      marca: shopifyProduct.marca?.value,
+      color: shopifyProduct.color?.value,
+      tecnologia_bateria: shopifyProduct.tecnologia_bateria?.value || shopifyProduct.tecnologia_de_la_bateria?.value,
+      estado_estetico: shopifyProduct.estado_estetico?.value,
+      red_de_datos: shopifyProduct.red_de_datos?.value,
+      sistema_operativo: shopifyProduct.sistema_operativo?.value,
+      capacidad_tarjeta_sim: shopifyProduct.capacidad_tarjeta_sim?.value || shopifyProduct.capacidad_de_tarjeta_sim?.value,
+      tipo_suscripcion: shopifyProduct.tipo_suscripcion?.value || shopifyProduct.tipo_de_suscripcion?.value,
+    }
   };
 }
 

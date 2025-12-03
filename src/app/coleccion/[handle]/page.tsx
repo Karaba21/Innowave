@@ -100,17 +100,17 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
-        <div className="container mx-auto px-4 py-8">
-            <ProductGrid
-                title={title}
-                products={products}
-            />
-            {products.length === 0 && (
-                <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg">No se encontraron productos en esta colección.</p>
-                </div>
-            )}
-        </div>
+            <div className="container mx-auto px-4 py-8">
+                <ProductGrid
+                    title={title}
+                    products={products}
+                />
+                {products.length === 0 && (
+                    <div className="text-center py-12">
+                        <p className="text-gray-500 text-lg">No se encontraron productos en esta colección.</p>
+                    </div>
+                )}
+            </div>
         </>
     );
 }
