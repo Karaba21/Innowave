@@ -34,6 +34,8 @@ export const metadata: Metadata = {
     },
 };
 
+import { Suspense } from 'react';
+
 export default async function ProductosPage() {
     const products = await getAllProducts();
 
@@ -66,10 +68,12 @@ export default async function ProductosPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
             <div className="container mx-auto px-4 py-8">
-                <ProductPageLayout
-                    title="Todos los Productos"
-                    products={products}
-                />
+                <Suspense fallback={<div>Cargando productos...</div>}>
+                    <ProductPageLayout
+                        title="Todos los Productos"
+                        products={products}
+                    />
+                </Suspense>
             </div>
         </>
     );

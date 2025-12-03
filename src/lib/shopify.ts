@@ -73,6 +73,10 @@ const PRODUCTS_FRAGMENT = `
             amount
             currencyCode
           }
+          compareAtPrice {
+            amount
+            currencyCode
+          }
         }
       }
     }
@@ -291,6 +295,7 @@ function reshapeProduct(shopifyProduct: any): Product {
     title: shopifyProduct.title,
     description: shopifyProduct.description,
     price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
+    oldPrice: firstVariant?.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : undefined,
     category: 'Shopify', // Placeholder as category logic might differ
     images: shopifyProduct.images?.edges.map((edge: any) => edge.node.url) || [],
     handle: shopifyProduct.handle,

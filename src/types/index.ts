@@ -3,10 +3,12 @@ export interface Product {
   title: string;
   description: string;
   price: number;
+  oldPrice?: number;
   category: string;
   images: string[];
   handle: string;
   isFeatured: boolean;
+  sectionTag?: string;
   variantId?: string;
   metafields?: {
     marca?: string;
