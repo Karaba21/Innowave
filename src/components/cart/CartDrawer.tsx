@@ -114,7 +114,7 @@ export function CartDrawer() {
                         onClick={() => setIsCartOpen(false)}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                     >
-                        <X size={24} />
+                        <X size={24} className="text-black" />
                     </button>
                 </div>
 
@@ -152,14 +152,14 @@ export function CartDrawer() {
                                                 className="p-1 hover:bg-gray-100"
                                                 disabled={item.quantity <= 1}
                                             >
-                                                <Minus size={14} />
+                                                <Minus size={14} className="text-black" />
                                             </button>
-                                            <span className="px-2 text-sm font-medium">{item.quantity}</span>
+                                            <span className="px-2 text-sm font-medium text-black">{item.quantity}</span>
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                 className="p-1 hover:bg-gray-100"
                                             >
-                                                <Plus size={14} />
+                                                <Plus size={14} className="text-black" />
                                             </button>
                                         </div>
                                         <button

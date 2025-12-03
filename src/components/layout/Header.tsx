@@ -44,6 +44,7 @@ export function Header() {
                     {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center gap-8 font-medium text-gray-700">
                         <Link href="/" className="hover:text-blue-600 transition-colors">Tienda</Link>
+                        <Link href="/productos" className="hover:text-blue-600 transition-colors">Productos</Link>
 
                         <div className="relative group">
                             <button className="hover:text-blue-600 transition-colors flex items-center gap-1 cursor-pointer">
@@ -95,6 +96,7 @@ export function Header() {
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-white border-t shadow-lg py-4 px-4 flex flex-col gap-4">
                     <Link href="/" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Tienda</Link>
+                    <Link href="/productos" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Productos</Link>
                     <div className="py-2 border-b flex flex-col gap-2">
                         <span className="font-semibold text-gray-500 text-sm">Categorías</span>
                         <Link href="/coleccion/electronicos" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Electronicos</Link>
