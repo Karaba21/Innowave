@@ -147,6 +147,47 @@ export async function getProductByHandle(handle: string): Promise<Product | unde
   return product ? reshapeProduct(product) : undefined;
 }
 
+export async function getAllProducts(): Promise<Product[]> {
+  const query = `
+    ${PRODUCTS_FRAGMENT}
+    query getAllProducts {
+      products(first: 250, sortKey: CREATED_AT, reverse: true) {
+        edges {
+          node {
+            ...ProductFragment
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await shopifyFetch<{
+    data: { products: { edges: { node: any }[] } };
+  }>({ query });
+
+  return response?.body?.data?.products?.edges.map(({ node }: any) => reshapeProduct(node)) || [];
+}
+
+export async function getAllCollections(): Promise<string[]> {
+  const query = `
+    query getAllCollections {
+      collections(first: 50) {
+        edges {
+          node {
+            handle
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await shopifyFetch<{
+    data: { collections: { edges: { node: { handle: string } }[] } };
+  }>({ query });
+
+  return response?.body?.data?.collections?.edges.map(({ node }) => node.handle) || [];
+}
+
 export async function searchProducts(query: string): Promise<Product[]> {
   const searchQuery = `
     ${PRODUCTS_FRAGMENT}

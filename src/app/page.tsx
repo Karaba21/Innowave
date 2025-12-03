@@ -2,13 +2,69 @@ import { Hero } from '@/components/home/Hero';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { getFeaturedProducts, getProductsByCollection } from '@/lib/shopify';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://innowaveuy.com';
+
+export const metadata: Metadata = {
+    title: 'Inicio',
+    description: 'Bienvenido a Innowave. Todo para tu hogar y tecnología en un solo lugar. Encuentra los mejores productos de electrónicos, bazar, electrodomésticos, movilidad y telefonía con envío gratis a todo el país.',
+    openGraph: {
+        type: 'website',
+        url: siteUrl,
+        title: 'Innowave - Tecnología y Hogar',
+        description: 'Todo para tu hogar y tecnología en un solo lugar. Encuentra los mejores productos con envío gratis a todo el país.',
+        siteName: 'Innowave',
+        images: [
+            {
+                url: '/logo.png',
+                width: 1200,
+                height: 630,
+                alt: 'Innowave - Tecnología y Hogar',
+            },
+        ],
+    },
+    alternates: {
+        canonical: siteUrl,
+    },
+};
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
   const essentialProducts = await getProductsByCollection('esenciales');
 
+  // Structured Data (JSON-LD) para la página principal
+  const structuredData = {
+    '@context': 'https://schema.org/',
+    '@type': 'WebSite',
+    name: 'Innowave',
+    description: 'Todo para tu hogar y tecnología en un solo lugar',
+    url: siteUrl,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Innowave',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
+      },
+    },
+  };
+
   return (
-    <div className="flex flex-col gap-8 pb-12">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="flex flex-col gap-8 pb-12">
       <Hero />
 
       <ProductGrid
@@ -78,5 +134,6 @@ export default async function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }

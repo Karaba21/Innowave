@@ -3,10 +3,67 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { ProductActions } from '@/components/product/ProductActions';
 import { ProductImageGallery } from '@/components/product/ProductImageGallery';
+import type { Metadata } from 'next';
 
 interface Props {
-    params: {
+    params: Promise<{
         handle: string;
+    }>;
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://innowaveuy.com';
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { handle } = await params;
+    const product = await getProductByHandle(handle);
+
+    if (!product) {
+        return {
+            title: 'Producto no encontrado',
+        };
+    }
+
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('es-UY', {
+            style: 'currency',
+            currency: 'UYU',
+            maximumFractionDigits: 0,
+        }).format(price);
+    };
+
+    const productUrl = `${siteUrl}/producto/${handle}`;
+    const productImage = product.images[0] || '/logo.png';
+    const price = formatPrice(product.price);
+    const description = product.description || `Compra ${product.title} en Innowave. ${price}. Envío gratis a todo el país.`;
+
+    return {
+        title: product.title,
+        description: description,
+        keywords: [product.title, product.category, 'tecnología', 'hogar', 'Uruguay'],
+        openGraph: {
+            type: 'website',
+            url: productUrl,
+            title: product.title,
+            description: description,
+            images: [
+                {
+                    url: productImage,
+                    width: 1200,
+                    height: 630,
+                    alt: product.title,
+                },
+            ],
+            siteName: 'Innowave',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: product.title,
+            description: description,
+            images: [productImage],
+        },
+        alternates: {
+            canonical: productUrl,
+        },
     };
 }
 
@@ -30,8 +87,38 @@ export default async function ProductPage({ params }: Props) {
         ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
         : 0;
 
+    // Structured Data (JSON-LD) para SEO
+    const structuredData = {
+        '@context': 'https://schema.org/',
+        '@type': 'Product',
+        name: product.title,
+        description: product.description,
+        image: product.images,
+        brand: {
+            '@type': 'Brand',
+            name: 'Innowave',
+        },
+        offers: {
+            '@type': 'Offer',
+            url: `${siteUrl}/producto/${handle}`,
+            priceCurrency: 'UYU',
+            price: product.price,
+            availability: 'https://schema.org/InStock',
+            seller: {
+                '@type': 'Organization',
+                name: 'Innowave',
+            },
+        },
+        category: product.category,
+    };
+
     return (
-        <div className="container mx-auto px-4 py-12">
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            />
+            <div className="container mx-auto px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* Image Gallery */}
                 <ProductImageGallery
@@ -81,5 +168,6 @@ export default async function ProductPage({ params }: Props) {
                 </div>
             </div>
         </div>
+        </>
     );
 }

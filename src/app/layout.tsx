@@ -8,9 +8,24 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://innowaveuy.com';
+
 export const metadata: Metadata = {
-  title: "Innowave - Tecnología y Hogar",
-  description: "Todo para tu hogar y tecnología en un solo lugar.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Innowave - Tecnología y Hogar",
+    template: "%s | Innowave"
+  },
+  description: "Todo para tu hogar y tecnología en un solo lugar. Encuentra los mejores productos de electrónicos, bazar, electrodomésticos, movilidad y telefonía con envío gratis a todo el país.",
+  keywords: ["tecnología", "hogar", "electrónicos", "electrodomésticos", "bazar", "movilidad", "telefonía", "Uruguay", "compras online"],
+  authors: [{ name: "Innowave" }],
+  creator: "Innowave",
+  publisher: "Innowave",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/favicon/favicon.ico" },
@@ -22,6 +37,45 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/favicon/site.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "es_UY",
+    url: siteUrl,
+    siteName: "Innowave",
+    title: "Innowave - Tecnología y Hogar",
+    description: "Todo para tu hogar y tecnología en un solo lugar. Encuentra los mejores productos con envío gratis a todo el país.",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Innowave - Tecnología y Hogar",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Innowave - Tecnología y Hogar",
+    description: "Todo para tu hogar y tecnología en un solo lugar. Encuentra los mejores productos con envío gratis a todo el país.",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Agregar cuando tengas los códigos de verificación
+    // google: 'tu-codigo-google',
+    // yandex: 'tu-codigo-yandex',
+    // bing: 'tu-codigo-bing',
+  },
 };
 
 export default function RootLayout({
