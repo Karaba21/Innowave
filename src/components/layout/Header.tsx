@@ -29,7 +29,7 @@ export function Header() {
                 <div className="flex items-center justify-between gap-4">
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden p-2"
+                        className="md:hidden p-2 text-blue-900"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -95,18 +95,18 @@ export function Header() {
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-white border-t shadow-lg py-4 px-4 flex flex-col gap-4">
-                    <Link href="/" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Tienda</Link>
-                    <Link href="/productos" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Productos</Link>
-                    <div className="py-2 border-b flex flex-col gap-2">
-                        <span className="font-semibold text-gray-500 text-sm">Categorías</span>
-                        <Link href="/coleccion/electronicos" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Electronicos</Link>
-                        <Link href="/coleccion/bazar" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Bazar</Link>
-                        <Link href="/coleccion/electrodomesticos" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Electrodomesticos</Link>
-                        <Link href="/coleccion/movilidad" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Movilidad</Link>
-                        <Link href="/coleccion/telefonia" className="pl-4 py-1 text-gray-600" onClick={() => setIsMobileMenuOpen(false)}>Telefonia</Link>
+                    <Link href="/" className="py-2 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Tienda</Link>
+                    <Link href="/productos" className="py-2 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Productos</Link>
+                    <div className="py-2 flex flex-col gap-2">
+                        <span className="font-semibold text-gray-700 text-sm">Categorías</span>
+                        <Link href="/coleccion/electronicos" className="pl-4 py-1 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Electronicos</Link>
+                        <Link href="/coleccion/bazar" className="pl-4 py-1 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Bazar</Link>
+                        <Link href="/coleccion/electrodomesticos" className="pl-4 py-1 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Electrodomesticos</Link>
+                        <Link href="/coleccion/movilidad" className="pl-4 py-1 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Movilidad</Link>
+                        <Link href="/coleccion/telefonia" className="pl-4 py-1 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Telefonia</Link>
                     </div>
-                    <Link href="/#ofertas" className="py-2 border-b" onClick={() => setIsMobileMenuOpen(false)}>Ofertas</Link>
-                    <Link href="#contacto" className="py-2" onClick={() => setIsMobileMenuOpen(false)}>Contacto</Link>
+                    <Link href="/#ofertas" className="py-2 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Ofertas</Link>
+                    <Link href="#contacto" className="py-2 text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Contacto</Link>
                 </div>
             )}
         </header>

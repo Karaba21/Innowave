@@ -81,19 +81,20 @@ export function ProductImageGallery({
                     {/* Previous Button */}
                     <button
                         onClick={goToPrevious}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 md:p-3 shadow-lg transition-all duration-200 md:opacity-0 md:group-hover:opacity-100 hover:scale-110"
                         aria-label="Imagen anterior"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
+                            className="md:w-6 md:h-6"
                         >
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
@@ -102,19 +103,20 @@ export function ProductImageGallery({
                     {/* Next Button */}
                     <button
                         onClick={goToNext}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 md:p-3 shadow-lg transition-all duration-200 md:opacity-0 md:group-hover:opacity-100 hover:scale-110"
                         aria-label="Imagen siguiente"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
+                            className="md:w-6 md:h-6"
                         >
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
@@ -127,8 +129,8 @@ export function ProductImageGallery({
                                 key={index}
                                 onClick={() => goToImage(index)}
                                 className={`w-2 h-2 rounded-full transition-all duration-200 ${index === currentIndex
-                                        ? 'bg-blue-600 w-8'
-                                        : 'bg-white/70 hover:bg-white'
+                                    ? 'bg-blue-600 w-8'
+                                    : 'bg-white/70 hover:bg-white'
                                     }`}
                                 aria-label={`Ir a imagen ${index + 1}`}
                             />
