@@ -4,6 +4,9 @@ import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://innowaveuy.com';
 
+
+export const revalidate = 60;
+
 export const metadata: Metadata = {
     title: 'Productos | Innowave',
     description: 'Explora todos nuestros productos. Encuentra los mejores artículos con envío gratis a todo el país en Innowave.',
