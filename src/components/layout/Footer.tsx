@@ -63,6 +63,9 @@ export function Footer() {
                 </div>
 
                 <div className="border-t border-gray-800 pt-8 text-center text-sm">
+                    <p className="mb-2">
+                        Pagina creada por <a href="https://savsolutionsuy.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Sav Solutions</a>
+                    </p>
                     <p>&copy; {new Date().getFullYear()} Innowave. Todos los derechos reservados.</p>
                 </div>
             </div>
